@@ -1,0 +1,15 @@
+FROM dunglas/frankenphp
+
+WORKDIR /app
+
+RUN install-php-extensions pdo_mysql opcache
+RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
+
+COPY . /app
+
+ENV SERVER_ROOT=/app
+ENV SERVER_NAME=:80
+
+EXPOSE 80
+
+ENTRYPOINT ["frankenphp", "run", "--config", "/app/Caddyfile"]
